@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
+import axios from "axios";
 
 export default class Register extends Component {
   state = {
@@ -16,8 +17,17 @@ export default class Register extends Component {
 
   onSubmit = () => {
     if (this.state.name && this.state.email && this.state.password) {
-      alert("200");
-    }
+      const newUser = {
+        name: this.state.name,
+        email: this.state.email,
+        password: this.state.password,
+      };
+
+      axios
+        .post("/api/user", newUser)
+        .then((res) => console.log(res))
+        .catch((err) => console.log(err));
+    } else alert("please fill out all the required fields");
   };
 
   render() {
@@ -25,7 +35,7 @@ export default class Register extends Component {
       <MDBContainer style={{ marginTop: "10%" }}>
         <MDBRow center>
           <MDBCol md="5" style={{ minWidth: "380px" }}>
-            <form>
+            <div>
               <p className="h4 text-center mb-4">Register</p>
               <label htmlFor="defaultFormRegisterNameEx" className="grey-text">
                 Your name
@@ -88,13 +98,12 @@ export default class Register extends Component {
                 <MDBBtn
                   className="white-text"
                   color="#212121 elegant-color-dark"
-                  type="submit"
                   onClick={this.onSubmit}
                 >
                   Register
                 </MDBBtn>
               </div>
-            </form>
+            </div>
           </MDBCol>
         </MDBRow>
       </MDBContainer>

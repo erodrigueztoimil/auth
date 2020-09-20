@@ -8,8 +8,8 @@ export default class App extends Component {
   render() {
     return (
       <Router>
-        <Route exact path="/" component={Register} />
-        <Route path="/login" component={Login} />
+        <Route exact path="/user/register" component={Register} />
+        <Route path="/user/login" component={Login} />
       </Router>
     );
   }

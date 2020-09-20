@@ -14,6 +14,8 @@ export default class Login extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  onSubmit = () => {};
+
   render() {
     return (
       <MDBContainer style={{ marginTop: "10%" }}>

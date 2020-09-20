@@ -35,9 +35,9 @@ export default class Register extends Component {
         .post("/api/user", newUser)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
-    } else alert("please fill out all the required fields");
 
-    this.resetState();
+      this.resetState();
+    } else alert("please fill out all the required fields");
   };
 
   render() {

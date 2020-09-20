@@ -3,12 +3,20 @@ import { MDBContainer, MDBRow, MDBCol, MDBBtn } from "mdbreact";
 import axios from "axios";
 
 export default class Register extends Component {
-  state = {
-    name: "",
-    email: "",
-    password: "",
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: "",
+      email: "",
+      password: "",
 
-    loading: false,
+      loading: false,
+    };
+    this.baseState = this.state;
+  }
+
+  resetState = () => {
+    this.setState(this.baseState);
   };
 
   onInputChange = (e) => {
@@ -28,6 +36,8 @@ export default class Register extends Component {
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     } else alert("please fill out all the required fields");
+
+    this.resetState();
   };
 
   render() {
@@ -55,22 +65,6 @@ export default class Register extends Component {
               </label>
               <input
                 id="defaultFormRegisterEmailEx"
-                className="form-control"
-                type="email"
-                name="email"
-                value={this.state.email}
-                onChange={this.onInputChange}
-                required
-              />
-              <br />
-              <label
-                htmlFor="defaultFormRegisterConfirmEx"
-                className="grey-text"
-              >
-                Confirm your email
-              </label>
-              <input
-                id="defaultFormRegisterConfirmEx"
                 className="form-control"
                 type="email"
                 name="email"

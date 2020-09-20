@@ -15,6 +15,13 @@ module.exports = (app) => {
       .catch((err) => res.status(400).json(err));
   });
 
+  // get user by email (login)
+  app.post("/api/user", (req, res) => {
+    User.findOne({ email: req.params.email })
+      .then((data) => res.status(200).json(data))
+      .catch((err) => res.status(400).json(err));
+  });
+
   // create user (register)
   app.post("/api/user", (req, res) => {
     User.create(req.body)

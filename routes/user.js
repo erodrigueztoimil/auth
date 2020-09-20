@@ -18,16 +18,27 @@ module.exports = (app) => {
   app.post("/api/user", (req, res) => {
     User.findOne({ email: req.body.email })
       .then((user) => {
-        if (user.data) {
-          res.status(302).json(`user with email ${user.data.email} found`);
+        if (user) {
+          res.status(302).json(`found user with email: ${user.email}`);
         } else {
           if (req.body.name) {
             User.create(req.body)
               .then((newUser) => res.status(201).json(newUser))
               .catch((err) => res.status(400).json(err));
+          } else {
+            res.status(404).send("user not found");
           }
-          res.status(404).json("user not found");
         }
+        // if (user.data) {
+        //   res.status(302).json(`user with email ${user.data.email} found`);
+        // } else {
+        //   if (req.body.name) {
+        //     User.create(req.body)
+        //       .then((newUser) => res.status(201).json(newUser))
+        //       .catch((err) => res.status(400).json(err));
+        //   }
+        //   res.status(404).json("user not found");
+        // }
       })
       .catch((err) => res.status(400).json(err));
   });

@@ -23,9 +23,14 @@ export default class Login extends Component {
   };
 
   onSubmit = () => {
+    const user = {
+      email: this.state.email,
+      password: this.state.password,
+    };
+
     axios
-      .get("/api/user/", this.state.email)
-      .then((res) => console.log(res))
+      .post("/api/user", user)
+      .then((response) => console.log(response))
       .catch((err) => console.log(err));
     this.resetState();
   };

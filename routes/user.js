@@ -19,7 +19,11 @@ module.exports = (app) => {
     User.findOne({ email: req.body.email })
       .then((user) => {
         if (user) {
-          res.status(302).json(`found user with email: ${user.email}`);
+          if (req.body.password === user.password) {
+            res.status(200).json(user);
+          } else {
+            res.status(401).json(req.body);
+          }
         } else {
           if (req.body.name) {
             User.create(req.body)
@@ -29,16 +33,6 @@ module.exports = (app) => {
             res.status(404).send("user not found");
           }
         }
-        // if (user.data) {
-        //   res.status(302).json(`user with email ${user.data.email} found`);
-        // } else {
-        //   if (req.body.name) {
-        //     User.create(req.body)
-        //       .then((newUser) => res.status(201).json(newUser))
-        //       .catch((err) => res.status(400).json(err));
-        //   }
-        //   res.status(404).json("user not found");
-        // }
       })
       .catch((err) => res.status(400).json(err));
   });

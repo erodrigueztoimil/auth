@@ -1,6 +1,6 @@
 const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
-const saltRounds = 10;
+const saltRounds = 20;
 
 const pwdHashHandler = (pwd) => {
   return new Promise((response) => {

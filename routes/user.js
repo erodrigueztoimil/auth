@@ -1,4 +1,22 @@
 const User = require("../models/user.model");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+
+const pwdHashHandler = (pwd) => {
+  return new Promise((response) => {
+    bcrypt.hash(pwd, saltRounds).then((hash) => {
+      response(hash);
+    });
+  });
+};
+
+const authenticate = (pwd, hash) => {
+  return new Promise((response) => {
+    bcrypt.compare(pwd, hash).then((result) => {
+      response(result);
+    });
+  });
+};
 
 module.exports = (app) => {
   // get all users
@@ -19,16 +37,28 @@ module.exports = (app) => {
     User.findOne({ email: req.body.email })
       .then((user) => {
         if (user) {
-          if (req.body.password === user.password) {
-            res.status(200).json(user);
-          } else {
-            res.status(401).json(req.body);
-          }
+          authenticate(req.body.password, user.password)
+            .then((response) => {
+              if (response) {
+                res.status(200).json(response);
+              } else {
+                res.status(401).json(response);
+              }
+            })
+            .catch((err) => res.send(400).json(err));
         } else {
           if (req.body.name) {
-            User.create(req.body)
-              .then((newUser) => res.status(201).json(newUser))
-              .catch((err) => res.status(400).json(err));
+            pwdHashHandler(req.body.password).then((response) => {
+              const userData = {
+                name: req.body.name,
+                email: req.body.email,
+                password: response,
+              };
+
+              User.create(userData)
+                .then((newUser) => res.status(201).json(newUser))
+                .catch((err) => res.status(400).json(err));
+            });
           } else {
             res.status(404).send("user not found");
           }
@@ -36,36 +66,4 @@ module.exports = (app) => {
       })
       .catch((err) => res.status(400).json(err));
   });
-
-  // User.findOne({ email: req.body.email })
-  //   .then((response) => {
-  //     if (!response.data) {
-  //       if (req.body.name) {
-  //         User.create(req.body)
-  //           .then((regData) => res.status(200).json(regData))
-  //           .catch((regErr) => res.status(400).json(regErr));
-  //       } else {
-  //         res.status(404).json(response.data);
-  //       }
-  //     } else if (response.data) {
-  //       User.findOne({ email: req.body.email })
-  //         .then((loginData) => res.status(302).json(loginData))
-  //         .catch((loginErr) => res.status(404).json(loginErr));
-  //     }
-  //   })
-  //   .catch((err) => res.status(400).json(err));
-
-  // // get user by email (login)
-  // app.post("/api/user", (req, res) => {
-  //   User.findOne({ email: req.params.email })
-  //     .then((data) => res.status(200).json(data))
-  //     .catch((err) => res.status(400).json(err));
-  // });
-
-  // // create user (register)
-  // app.post("/api/user", (req, res) => {
-  //   User.create(req.body)
-  //     .then((data) => res.status(201).json(data))
-  //     .catch((err) => res.status(400).json(err));
-  // });
 };

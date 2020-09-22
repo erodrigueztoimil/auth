@@ -7,14 +7,18 @@ import Register from "./Register";
 class User extends Component {
   render() {
     return (
-      <Switch>
-        <Route path={`${this.props.match.url}/login`}>
-          <Login />
-        </Route>
-        <Route path={`${this.props.match.url}/register`}>
-          <Register />
-        </Route>
-      </Switch>
+      <div>
+        {localStorage.getItem("token") && this.props.history.push("/home")}
+
+        <Switch>
+          <Route path={`${this.props.match.url}/login`}>
+            <Login />
+          </Route>
+          <Route path={`${this.props.match.url}/register`}>
+            <Register />
+          </Route>
+        </Switch>
+      </div>
     );
   }
 }

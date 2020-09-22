@@ -30,9 +30,11 @@ export default class Login extends Component {
 
     axios
       .post("/api/user", user)
-      .then((response) => console.log(response))
+      .then((response) => {
+        localStorage.setItem("token", JSON.stringify(response.data));
+        this.props.history.push("/home");
+      })
       .catch((err) => console.log(err));
-    this.resetState();
   };
 
   render() {

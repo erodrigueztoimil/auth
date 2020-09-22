@@ -40,7 +40,7 @@ module.exports = (app) => {
           authenticate(req.body.password, user.password)
             .then((response) => {
               if (response) {
-                res.status(200).json(user);
+                res.status(200).json({ name: user.name, email: user.email });
               } else {
                 res.status(401).json(response);
               }

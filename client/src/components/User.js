@@ -1,20 +1,18 @@
 import React, { Component } from "react";
-import { Switch, Route, withRouter } from "react-router-dom";
+import { Switch, Route } from "react-router-dom";
 
 import Login from "./Login";
 import Register from "./Register";
 
-class User extends Component {
+export default class User extends Component {
   render() {
     return (
       <div>
-        {localStorage.getItem("token") && this.props.history.push("/home")}
-
         <Switch>
-          <Route path={`${this.props.match.url}/login`}>
+          <Route path="/login">
             <Login />
           </Route>
-          <Route path={`${this.props.match.url}/register`}>
+          <Route path="/register">
             <Register />
           </Route>
         </Switch>
@@ -22,5 +20,3 @@ class User extends Component {
     );
   }
 }
-
-export default withRouter(User);

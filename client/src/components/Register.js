@@ -6,7 +6,7 @@ export default class Register extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "", 
+      name: "",
       email: "",
       password: "",
 
